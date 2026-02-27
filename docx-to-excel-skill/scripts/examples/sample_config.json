@@ -1,0 +1,72 @@
+{
+  "document_type": "report",
+  "fields": [
+    {
+      "name": "报告标题",
+      "type": "paragraph",
+      "location": "标题1[0]",
+      "description": "文档的一级标题",
+      "default": "未命名报告"
+    },
+    {
+      "name": "报告日期",
+      "type": "regex",
+      "pattern": "日期[:：]\\s*(\\d{4}[-/年]\\d{1,2}[-/月]\\d{1,2}日?)",
+      "description": "从文本中提取日期",
+      "default": "未知日期"
+    },
+    {
+      "name": "编制单位",
+      "type": "paragraph",
+      "location": "",
+      "pattern": "编制单位[:：]\\s*(.+)",
+      "description": "查找包含'编制单位'的段落",
+      "default": "未知单位"
+    },
+    {
+      "name": "总金额",
+      "type": "table",
+      "table_index": 0,
+      "row": 5,
+      "column": 3,
+      "description": "第一个表格的第6行第4列",
+      "default": "0"
+    },
+    {
+      "name": "项目数量",
+      "type": "table",
+      "table_index": 1,
+      "row": 0,
+      "column": 1,
+      "description": "第二个表格的第1行第2列",
+      "default": "0"
+    },
+    {
+      "name": "负责人",
+      "type": "regex",
+      "pattern": "负责人[:：]\\s*([^\\s，。]+)",
+      "description": "提取负责人姓名",
+      "default": "未指定"
+    },
+    {
+      "name": "审核状态",
+      "type": "paragraph",
+      "location": "",
+      "pattern": "审核状态[:：]\\s*(已审核|待审核|未审核)",
+      "description": "提取审核状态",
+      "default": "未审核"
+    }
+  ],
+  "output_settings": {
+    "excel_template": "templates/report_template.xlsx",
+    "sheet_name": "提取数据",
+    "include_raw_text": false,
+    "include_tables": true,
+    "format_numbers": true
+  },
+  "validation_rules": {
+    "required_fields": ["报告标题", "报告日期", "编制单位"],
+    "date_format": "YYYY-MM-DD",
+    "number_precision": 2
+  }
+}
