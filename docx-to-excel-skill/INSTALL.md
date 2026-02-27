@@ -2,7 +2,7 @@
 
 ## 技能概述
 
-docx-to-excel 是一个LobsterAI技能，用于从Word文档提取结构化数据并生成Excel文件。支持多种提取模式和输出格式。
+docx-to-excel 是一个openclaw技能，用于从Word文档提取结构化数据并生成Excel文件。支持多种提取模式和输出格式。
 
 ## 系统要求
 
