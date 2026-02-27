@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>英语时态冒险岛 - 功能测试</h1>
+
+    <div class="test-section">
+        <h2>1. 文件检查</h2>
+        <button class="test-button" onclick="checkFiles()">检查游戏文件</button>
+        <div id="fileResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. 游戏启动测试</h2>
+        <button class="test-button" onclick="launchGame()">启动游戏</button>
+        <div id="gameResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 游戏功能测试</h2>
+        <button class="test-button" onclick="testGameLogic()">测试游戏逻辑</button>
+        <div id="logicResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. 最终测试</h2>
+        <a href="index.html" target="_blank">
+            <button class="test-button">在新标签页中打开完整游戏</button>
+        </a>
+        <p>点击上面的按钮在新标签页中打开完整的游戏进行测试。</p>
+    </div>
+
+    <script>
+        function checkFiles() {
+            const files = ['index.html', 'style.css', 'game.js'];
+            const results = [];
+
+            files.forEach(file => {
+                fetch(file)
+                    .then(response => {
+                        if (response.ok) {
+                            results.push(`✓ ${file} 存在且可访问`);
+                        } else {
+                            results.push(`✗ ${file} 无法访问 (状态码: ${response.status})`);
+                        }
+                    })
+                    .catch(error => {
+                        results.push(`✗ ${file} 检查失败: ${error.message}`);
+                    })
+                    .finally(() => {
+                        if (results.length === files.length) {
+                            displayResult('fileResult', results.join('<br>'));
+                        }
+                    });
+            });
+        }
+
+        function launchGame() {
+            const resultDiv = document.getElementById('gameResult');
+            resultDiv.innerHTML = '正在检查游戏初始化...';
+
+            // 模拟游戏初始化
+            setTimeout(() => {
+                try {
+                    // 检查游戏数据
+                    if (typeof gameData !== 'undefined') {
+                        const islands = Object.keys(gameData);
+                        resultDiv.innerHTML = `
+                            <span class="success">✓ 游戏初始化成功！</span><br>
+                            ✓ 检测到 ${islands.length} 个时态岛屿<br>
+                            ✓ 游戏数据加载完成<br>
+                            ✓ 可以开始游戏了！
+                        `;
+                    } else {
+                        resultDiv.innerHTML = '<span class="error">✗ 游戏数据未找到</span>';
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `<span class="error">✗ 游戏初始化失败: ${error.message}</span>`;
+                }
+            }, 1000);
+        }
+
+        function testGameLogic() {
+            const resultDiv = document.getElementById('logicResult');
+            resultDiv.innerHTML = '正在测试游戏逻辑...';
+
+            setTimeout(() => {
+                try {
+                    // 测试游戏数据结构
+                    const tests = [];
+
+                    // 测试1：检查四大时态
+                    const expectedTenses = ['present', 'past', 'future', 'progressive'];
+                    const actualTenses = Object.keys(gameData);
+
+                    if (JSON.stringify(expectedTenses.sort()) === JSON.stringify(actualTenses.sort())) {
+                        tests.push('✓ 四大时态数据完整');
+                    } else {
+                        tests.push('✗ 时态数据不完整');
+                    }
+
+                    // 测试2：检查每个时态的挑战数量
+                    let challengeCountOk = true;
+                    for (const tense in gameData) {
+                        if (gameData[tense].challenges.length !== 3) {
+                            challengeCountOk = false;
+                            break;
+                        }
+                    }
+
+                    if (challengeCountOk) {
+                        tests.push('✓ 每个时态有3个挑战');
+                    } else {
+                        tests.push('✗ 挑战数量不一致');
+                    }
+
+                    // 测试3：检查数据类型
+                    let dataTypesOk = true;
+                    for (const tense in gameData) {
+                        const data = gameData[tense];
+                        if (!data.title || !data.lesson || !Array.isArray(data.challenges)) {
+                            dataTypesOk = false;
+                            break;
+                        }
+                    }
+
+                    if (dataTypesOk) {
+                        tests.push('✓ 数据结构正确');
+                    } else {
+                        tests.push('✗ 数据结构错误');
+                    }
+
+                    resultDiv.innerHTML = tests.join('<br>');
+
+                } catch (error) {
+                    resultDiv.innerHTML = `<span class="error">✗ 逻辑测试失败: ${error.message}</span>`;
+                }
+            }, 1000);
+        }
+
+        function displayResult(elementId, message) {
+            document.getElementById(elementId).innerHTML = message;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语时态冒险岛 - 小学生英语时态学习游戏</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 游戏标题 -->
+        <header class="game-header">
+            <h1><i class="fas fa-map-marked-alt"></i> 英语时态冒险岛</h1>
+            <p class="subtitle">探索四大时态，成为英语小达人！</p>
+        </header>
+
+        <!-- 游戏主界面 -->
+        <main class="game-main">
+            <!-- 岛屿选择区域 -->
+            <section class="island-selection">
+                <h2><i class="fas fa-compass"></i> 选择你的冒险岛屿</h2>
+                <div class="islands-grid">
+                    <div class="island-card" data-island="present">
+                        <div class="island-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <h3>现在岛</h3>
+                        <p>一般现在时</p>
+                        <div class="island-info">
+                            <p><i class="fas fa-check-circle"></i> 表示经常发生的动作</p>
+                            <p><i class="fas fa-check-circle"></i> 表示客观事实</p>
+                        </div>
+                        <button class="enter-island-btn" data-island="present">开始冒险</button>
+                    </div>
+
+                    <div class="island-card" data-island="past">
+                        <div class="island-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>过去岛</h3>
+                        <p>一般过去时</p>
+                        <div class="island-info">
+                            <p><i class="fas fa-check-circle"></i> 表示过去发生的动作</p>
+                            <p><i class="fas fa-check-circle"></i> 动词要变过去式</p>
+                        </div>
+                        <button class="enter-island-btn" data-island="past">开始冒险</button>
+                    </div>
+
+                    <div class="island-card" data-island="future">
+                        <div class="island-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>将来岛</h3>
+                        <p>一般将来时</p>
+                        <div class="island-info">
+                            <p><i class="fas fa-check-circle"></i> 表示将要发生的动作</p>
+                            <p><i class="fas fa-check-circle"></i> 使用will或be going to</p>
+                        </div>
+                        <button class="enter-island-btn" data-island="future">开始冒险</button>
+                    </div>
+
+                    <div class="island-card" data-island="progressive">
+                        <div class="island-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>进行岛</h3>
+                        <p>现在进行时</p>
+                        <div class="island-info">
+                            <p><i class="fas fa-check-circle"></i> 表示正在进行的动作</p>
+                            <p><i class="fas fa-check-circle"></i> 动词加-ing</p>
+                        </div>
+                        <button class="enter-island-btn" data-island="progressive">开始冒险</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 游戏区域 -->
+            <section class="game-area" id="gameArea" style="display: none;">
+                <div class="game-header-bar">
+                    <button class="back-to-islands-btn">
+                        <i class="fas fa-arrow-left"></i> 返回岛屿选择
+                    </button>
+                    <div class="game-stats">
+                        <span class="stars-count"><i class="fas fa-star"></i> 星星: <span id="stars">0</span></span>
+                        <span class="score"><i class="fas fa-trophy"></i> 分数: <span id="score">0</span></span>
+                    </div>
+                </div>
+
+                <div class="game-content">
+                    <div class="island-title" id="islandTitle"></div>
+
+                    <div class="lesson-section">
+                        <h3><i class="fas fa-book-open"></i> 时态小课堂</h3>
+                        <div class="lesson-content" id="lessonContent"></div>
+                    </div>
+
+                    <div class="challenge-section">
+                        <h3><i class="fas fa-gamepad"></i> 挑战任务</h3>
+                        <div class="challenge-content" id="challengeContent">
+                            <!-- 游戏内容会动态加载到这里 -->
+                        </div>
+                    </div>
+
+                    <div class="feedback-section" id="feedbackSection" style="display: none;">
+                        <div class="feedback-message" id="feedbackMessage"></div>
+                        <button class="next-challenge-btn" id="nextChallengeBtn">下一个挑战</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 游戏说明 -->
+        <footer class="game-footer">
+            <div class="instructions">
+                <h4><i class="fas fa-lightbulb"></i> 游戏说明：</h4>
+                <ul>
+                    <li>选择不同的岛屿学习不同的英语时态</li>
+                    <li>完成挑战任务获得星星和分数</li>
+                    <li>每个岛屿有3个挑战关卡</li>
+                    <li>收集足够的星星可以解锁更多内容</li>
+                </ul>
+            </div>
+            <div class="tense-summary">
+                <h4><i class="fas fa-graduation-cap"></i> 四大时态总结：</h4>
+                <div class="tense-cards">
+                    <div class="tense-card">
+                        <h5>一般现在时</h5>
+                        <p>结构：主语 + 动词原形/动词+s</p>
+                        <p>例：I play, He plays</p>
+                    </div>
+                    <div class="tense-card">
+                        <h5>一般过去时</h5>
+                        <p>结构：主语 + 动词过去式</p>
+                        <p>例：I played, He played</p>
+                    </div>
+                    <div class="tense-card">
+                        <h5>一般将来时</h5>
+                        <p>结构：主语 + will + 动词原形</p>
+                        <p>例：I will play, He will play</p>
+                    </div>
+                    <div class="tense-card">
+                        <h5>现在进行时</h5>
+                        <p>结构：主语 + am/is/are + 动词-ing</p>
+                        <p>例：I am playing, He is playing</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 音效 -->
+    <audio id="correctSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" preload="auto"></audio>
+
+    <script src="game.js"></script>
+</body>
+</html>
