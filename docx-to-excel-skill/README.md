@@ -1,6 +1,6 @@
 # Word文档到Excel转换技能
 
-这是一个LobsterAI技能，用于从Word文档提取结构化数据并生成Excel文件。
+这是一个openclaw技能，用于从Word文档提取结构化数据并生成Excel文件。
 
 ## 功能特性
 
