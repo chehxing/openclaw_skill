@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投篮游戏 - Basketball Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .game-container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .game-area {
+            position: relative;
+            margin: 0 auto 30px;
+        }
+
+        #gameCanvas {
+            background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls h2 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 0 10px;
+            font-weight: bold;
+            min-width: 100px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 10px;
+            min-width: 150px;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #FFD700;
+        }
+
+        .instructions {
+            margin-top: 30px;
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+            max-width: 600px;
+        }
+
+        .fullscreen-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+            }
+
+            .score-board {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .score-item {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🏀 投篮游戏</h1>
+        <p class="subtitle">控制球员移动，点击投篮得分！</p>
+
+        <div class="game-area">
+            <canvas id="gameCanvas" width="800" height="500"></canvas>
+        </div>
+
+        <div class="controls">
+            <h2>游戏控制</h2>
+            <div class="control-item">
+                <span>移动球员：</span>
+                <span class="key">← 左箭头</span>
+                <span class="key">→ 右箭头</span>
+            </div>
+            <div class="control-item">
+                <span>蓄力投篮：</span>
+                <span class="key">长按鼠标</span>
+                <span>+</span>
+                <span class="key">释放投篮</span>
+            </div>
+            <div class="control-item">
+                <span>全屏切换：</span>
+                <span class="key">F 键</span>
+            </div>
+        </div>
+
+        <div class="score-board">
+            <div class="score-item">
+                <div>得分</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            <div class="score-item">
+                <div>尝试次数</div>
+                <div class="score-value" id="attempts">0</div>
+            </div>
+            <div class="score-item">
+                <div>命中率</div>
+                <div class="score-value" id="accuracy">0%</div>
+            </div>
+        </div>
+
+        <button class="fullscreen-btn" onclick="toggleFullscreen()">切换全屏 (F键)</button>
+
+        <div class="instructions">
+            <p><strong>游戏说明：</strong>使用左右箭头键控制球员在篮筐下方移动，<strong>长按鼠标蓄力</strong>，释放鼠标投出篮球。蓄力时间越长，投篮力度越大！篮球会以抛物线轨迹运动，进入篮筐得分。观察蓄力指示器，掌握最佳投篮力度！</p>
+        </div>
+    </div>
+
+    <script src="basketball_game.js"></script>
+</body>
+</html>
